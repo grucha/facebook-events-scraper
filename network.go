@@ -1,19 +1,16 @@
 package fbevents
 
 import (
-	"compress/gzip"
 	"fmt"
 	"io"
 	"net/http"
-	"strings"
 	"time"
 )
 
 // defaultHeaders mimics a Chrome browser request to pass Facebook's bot checks.
 var defaultHeaders = map[string]string{
 	"accept":                    "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
-	"accept-encoding":           "gzip, deflate, br",
-	"accept-language":           "en-US,en;q=0.6",
+"accept-language":           "en-US,en;q=0.6",
 	"cache-control":             "max-age=0",
 	"sec-fetch-dest":            "document",
 	"sec-fetch-mode":            "navigate",
@@ -25,9 +22,8 @@ var defaultHeaders = map[string]string{
 }
 
 // fetchHTML performs an HTTP GET to rawURL and returns the response body as a
-// string. It sets browser-spoofing headers and handles gzip decompression
-// manually (because we explicitly set Accept-Encoding, Go's transport will not
-// auto-decompress).
+// string. It sets browser-spoofing headers. Go's transport automatically
+// negotiates gzip and decompresses the response transparently.
 func fetchHTML(rawURL string, opts *Options) (string, error) {
 	client := buildHTTPClient(opts)
 
@@ -50,20 +46,7 @@ func fetchHTML(rawURL string, opts *Options) (string, error) {
 		return "", fmt.Errorf("error fetching event, make sure your URL is correct and the event is accessible to the public")
 	}
 
-	var reader io.Reader = resp.Body
-
-	// Manually decompress if the server sent gzip-encoded content.
-	encoding := resp.Header.Get("Content-Encoding")
-	if strings.Contains(encoding, "gzip") {
-		gr, err := gzip.NewReader(resp.Body)
-		if err != nil {
-			return "", fmt.Errorf("error fetching event, make sure your URL is correct and the event is accessible to the public")
-		}
-		defer gr.Close()
-		reader = gr
-	}
-
-	body, err := io.ReadAll(reader)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return "", fmt.Errorf("error fetching event, make sure your URL is correct and the event is accessible to the public")
 	}
