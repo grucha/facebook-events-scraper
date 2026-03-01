@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	fbevents "github.com/sylwek/fb-event-scraper"
+	fbevents "github.com/grucha/facebook-events-scraper"
 )
 
 func main() {

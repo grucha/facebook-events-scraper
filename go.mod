@@ -1,3 +1,3 @@
-module github.com/sylwek/fb-event-scraper
+module github.com/grucha/facebook-events-scraper
 
 go 1.21

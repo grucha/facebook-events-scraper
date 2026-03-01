@@ -1,4 +1,4 @@
-# fb-event-scraper
+# facebook-event-scraper
 
 A Go port of [francescov1/facebook-event-scraper](https://github.com/francescov1/facebook-event-scraper) — scrape public Facebook event data with no external dependencies.
 
@@ -20,7 +20,11 @@ A Go port of [francescov1/facebook-event-scraper](https://github.com/francescov1
 ## Installation
 
 ```bash
-go get github.com/sylwek/fb-event-scraper
+# Latest release
+go get github.com/grucha/facebook-events-scraper
+
+# Pin to a specific version
+go get github.com/grucha/facebook-events-scraper@v0.1.0
 ```
 
 Requires Go 1.21+. No external dependencies.
@@ -36,7 +40,7 @@ package main
 
 import (
     "fmt"
-    fbevents "github.com/sylwek/fb-event-scraper"
+    fbevents "github.com/grucha/facebook-events-scraper"
 )
 
 func main() {
@@ -91,7 +95,7 @@ Returns `[]*EventData`. Already-scraped events are returned even if an error occ
 import (
     "net/http"
     "time"
-    fbevents "github.com/sylwek/fb-event-scraper"
+    fbevents "github.com/grucha/facebook-events-scraper"
 )
 
 opts := &fbevents.Options{
