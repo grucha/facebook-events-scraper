@@ -64,6 +64,8 @@ func getBasicData(html string) (*basicData, error) {
 				}
 				if uri := getString(photo, "image", "uri"); uri != "" {
 					p.ImageURI = &uri
+				} else if uri := getString(photo, "full_image", "uri"); uri != "" {
+					p.ImageURI = &uri
 				}
 				bd.Photo = p
 			}
@@ -84,6 +86,8 @@ func getBasicData(html string) (*basicData, error) {
 				ID:  getString(photo, "id"),
 			}
 			if uri := getString(photo, "image", "uri"); uri != "" {
+				ep.ImageURI = &uri
+			} else if uri := getString(photo, "full_image", "uri"); uri != "" {
 				ep.ImageURI = &uri
 			}
 			bd.Photos = append(bd.Photos, ep)
